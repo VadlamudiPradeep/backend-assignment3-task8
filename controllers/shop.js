@@ -3,6 +3,7 @@ const Cart = require('../models/cart');
 
 const ITEMS_PER_PAGE = 1;
 
+
 exports.getProducts = (req, res, next) => {
   Product.findAll()
     .then(products => {
@@ -53,11 +54,12 @@ exports.getProduct = (req, res, next) => {
 //       console.log(err);
 //     });
 // };
+
 exports.getIndex = (req, res, next) => {
   console.log(req.params)
   var totalProducts;
-  const page = +req.params.pageNo || 1;
-  let totalItems;
+  var page = +req.params.pageNo || 1;
+  var totalItems;
   Product.findAll().then(response=>{
     totalProducts=response.length
   }).catch(err=>console.log(err))
@@ -82,6 +84,67 @@ exports.getIndex = (req, res, next) => {
     });
 };
 
+exports.postCart = (req, res, next) => {
+  var totalProducts;
+  var page = +req.params.pageNo || 1;
+  var totalItems;
+
+  Product.findAll({offset: (page-1)*ITEMS_PER_PAGE, limit: ITEMS_PER_PAGE+1})
+    .then(products => {
+      res.json({
+        products: products,
+        currentPage: page,
+        hasNextPage: ITEMS_PER_PAGE * page < totalProducts,
+        hasPreviousPage: page > 1,
+        nextPage:page+1,
+        previousPage:page-1,
+        lastPage:Math.ceil(totalProducts/ITEMS_PER_PAGE),
+        totalItems: totalProducts
+      });
+    })
+    .catch(err => {
+     console.log(err)
+    });
+  // Error - Handling -> if user has not send the product id
+  // if(!req.body.productId){
+  //   return res.status(400).json({ success: false, message: 'Product Id Missing'})
+  // }
+  // const prodId = req.body.productId;
+  // let fetchedCart;
+  // let newQuantity = 1;
+  // req.user
+  //   .getCart()
+  //   .then(cart => {
+  //     fetchedCart = cart;
+  //     return cart.getProducts({ where: { id: prodId } });
+  //   })
+  //   .then(products => {
+  //     let product;
+  //     if (products.length > 0) {
+  //       product = products[0];
+  //     }
+
+  //     if (product) {
+  //       const oldQuantity = product.cartItem.quantity;
+  //       newQuantity = oldQuantity + 1;
+  //       return product;
+  //     }
+  //     return Product.findByPk(prodId);
+  //   })
+  //   .then(product => {
+  //     return fetchedCart.addProduct(product, {
+  //       through: { quantity: newQuantity }
+  //     });
+  //   })
+  //   .then(() => {
+  //     // res.redirect('/cart');
+  //     res.status(200).json({ success: true, message: 'Successfully added to the Product.'})
+  //   })
+  //   // .catch(err => console.log(err));
+  //   .catch(err => {
+  //     res.status(500).json({ success: false, message: 'Error Occurred.'})
+  //   })
+};
 exports.getCart = (req, res, next) => {
   req.user
     .getCart()
@@ -107,48 +170,7 @@ exports.getCart = (req, res, next) => {
     .catch(err => { res.status(500).json({ success: false, message: err})});
 };
 
-exports.postCart = (req, res, next) => {
 
-  // Error - Handling -> if user has not send the product id
-  if(!req.body.productId){
-    return res.status(400).json({ success: false, message: 'Product Id Missing'})
-  }
-  const prodId = req.body.productId;
-  let fetchedCart;
-  let newQuantity = 1;
-  req.user
-    .getCart()
-    .then(cart => {
-      fetchedCart = cart;
-      return cart.getProducts({ where: { id: prodId } });
-    })
-    .then(products => {
-      let product;
-      if (products.length > 0) {
-        product = products[0];
-      }
-
-      if (product) {
-        const oldQuantity = product.cartItem.quantity;
-        newQuantity = oldQuantity + 1;
-        return product;
-      }
-      return Product.findByPk(prodId);
-    })
-    .then(product => {
-      return fetchedCart.addProduct(product, {
-        through: { quantity: newQuantity }
-      });
-    })
-    .then(() => {
-      // res.redirect('/cart');
-      res.status(200).json({ success: true, message: 'Successfully added to the Product.'})
-    })
-    // .catch(err => console.log(err));
-    .catch(err => {
-      res.status(600).json({ success: false, message: 'Error Occurred.'})
-    })
-};
 
 exports.postCartDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
