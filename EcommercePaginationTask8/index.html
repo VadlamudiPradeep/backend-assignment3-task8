@@ -1,13 +1,12 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task 14 -> Adding pagination</title>
+    <title>Task 15 -> Creating the orders page</title>
     <link rel="stylesheet" href="./style.css">
-    <script src="./script.js" async></script>
-    <!-- Async - means execute code when it is downloaded and do not block DOM construction during downloading process. -->
-    <!-- Defer - means execute code after it's downloaded and browser finished DOM construction and rendering process. -->
+ 
+   
 </head>
 <body>
     <div id="EcommerceContainer">
@@ -16,9 +15,9 @@
             <ul class='header'>
                 <li><a href="./index.html">HOME</a></li>
                 <li><a href="./about.html">ABOUT US</a></li>
-                <a href="#cart" class="cart-holder">cart<span class='cart-number'></span></a>
+                <a href="#cart" class="cart-holder">cart<span class='cart-number'>0</span></a>
             </ul>
-            <h1>v website</h1>
+            <h1>AK Star</h1>
         </header>
         <!-- Mobile Section -->
         <section id="Products" class="container">
@@ -34,7 +33,7 @@
                 <span class='cart-price cart-column'>PRICE</span>
                 <span class='cart-quantity cart-column'>QUANTITY</span>
             </div>
-            <div class='cart'></div>
+            <div class='cart-items'></div>
             <div class="cart-total">
                 <span>
                     <span class='total-title'> <strong>Total</strong>
@@ -47,11 +46,9 @@
 
         <!-- pagination -->
         <div id="pages-button"></div>
-        <div class="pages-container"></div>
+
         <!-- <button class="cart-btn-bottom"> <a href="#cart" class="cart-bottom">See the cart</a></button> -->
-        <div class="bottom-button"><button id="open-cart">Go to Cart</button>
-       
-        </div>
+        <div class="bottom-button"><button id="open-cart">Go to Cart</button></div>
 
 
     </div>
@@ -60,7 +57,7 @@
     <!-- footer -->
     <footer>
         <div class="footer-title">
-            v website
+            AK Star
         </div>
         <div class="footer-icons">
             <ul>
@@ -79,8 +76,6 @@
 
     <!-- add axios -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
-Footer
-© 2022 GitHub, Inc.
-Footer navigation
